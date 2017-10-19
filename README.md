@@ -3,7 +3,7 @@ Kotlin ve Android hakkında öğrenme aşamasında geliştirdiğim ufak çaplı 
 
 Lütfen projelerdeki <b>Kotlin</b> kodlarını iyileştirme konusunda bana yardımcı olun. 
 
-Öncelikle projelerimizde <b>ANKO</b> toolbox'ını kullandığımızı belirtmek isterim.
+Öncelikle projelerimizde <b>ANKO Toolbox</b>'ını kullandığımızı belirtmek isterim.
 
 İlgili projeye erişebilmek için lütfen <a href="https://github.com/Kotlin/anko/blob/master/README.md">TIKLAYINIZ</a>
 
