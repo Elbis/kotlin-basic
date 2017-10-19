@@ -16,3 +16,5 @@ Kullanımını görmek,
 </ul>
 
 Aksiyonlarının Kotlin'de nasıl kullanılabileceğini görmek için yapılmıştır.
+
+İlgili proje, Youtube Bilgisayar Kavramları kanalıdan Sn. Şadi Evren ŞEKER'in java video serisinden Kotlin'e uyarlanmıştır.
