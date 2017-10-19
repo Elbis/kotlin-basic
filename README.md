@@ -1,5 +1,5 @@
 # kotlin-basic
-Kotlin ve Android hakkında öğrenme aşamasında geliştirdiğim ufak çaplı projeler
+Kotlin ve Android hakkında öğrenme aşamasında geliştirdiğim ufak çaplı projeleri burada yayınlayacağım.
 
 Lütfen projelerdeki <b>Kotlin</b> kodlarını iyileştirme konusunda bana yardımcı olun. 
 
