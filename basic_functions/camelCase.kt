@@ -6,10 +6,12 @@
 
 fun main(args: Array<String>) {
     print("camelCase cümlenizi giriniz: ")
-        val cumle= readLine()
-        if(cumle!=null)println(camelCase(cumle))
-        else{
-        kotlin.NullPointerException("Boş giriş yaptınız.")
+        val cumle= readLine()!! //boş değer alabilir.
+        if(cumle!=""){ //boş değilse, fonksiyonu çalıştırıp dönüş alır.
+            println(camelCase(cumle))
+        }
+        else{ //boşsa uyarı verir ve program sonlanır.
+            println("Boş giriş yaptınız. Cümle yazmalıydınız.")
     }
 }
 
