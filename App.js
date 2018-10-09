@@ -2,84 +2,101 @@ import React from 'react';
 import { StyleSheet, Platform, Image, Text, View, ScrollView, TouchableOpacity, AsyncStorage } from 'react-native';
 
 import firebase from 'react-native-firebase';
-import navigation, {createSwitchNavigator, NavigationActions, createStackNavigator} from 'react-navigation'
+import navigation, { createSwitchNavigator, NavigationActions, createStackNavigator } from 'react-navigation'
 import splash from './src/splash'
 import verify from './src/verify'
 import webview from './src/webview'
 
 
 const Navigator = createSwitchNavigator({
-  
+
   splash: {
     screen: splash,
   },
   verify: {
-    screen:verify,
+    screen: verify,
   },
   webview: {
     screen: webview,
-    
-  }, 
+
+  },
   
-  
+
+
 },
+{
+  
+}
 )
 const InAppNavigator = createSwitchNavigator({
   webview: {
-    screen:webview,
-    
+    screen: webview,
+
   },
 })
 
-export default class App extends React.Component{
+export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       // firebase things?
-      link:null,
+      link: null,
     };
-    
-  }
-  
- /* goWebView = (link) => {
-    navigation.navigate('webview', {webViewLink: link})
-    AsyncStorage.setItem("webViewLink", "")
-}*/
-  componentDidMount() {
 
-   this.initialNotificationListener = firebase.notifications().getInitialNotification()
-  .then((notificationOpen: NotificationOpen) => {
+  }
+
+  /* goWebView = (link) => {
+     navigation.navigate('webview', {webViewLink: link})
+     AsyncStorage.setItem("webViewLink", "")
+ }*/
+  async componentDidMount() {
+    const notificationOpen: NotificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
-        console.log("İnitialize ")
-        
+      console.log("İnitialize ")
+
       // App was opened by a notification
       // Get the action triggered by the notification being opened
       const action = notificationOpen.action;
       // Get information about the notification that was opened
-      
-      const notification: Notification = notificationOpen.notification; 
+
+      const notification: Notification = notificationOpen.notification;
+      console.log(notification.data.link)
+      this.setState({ link: notification.data.link })
+    }/*
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen: NotificationOpen) => {
+        if (notificationOpen) {
+          console.log("İnitialize ")
+
+          // App was opened by a notification
+          // Get the action triggered by the notification being opened
+          const action = notificationOpen.action;
+          // Get information about the notification that was opened
+
+          const notification: Notification = notificationOpen.notification;
+          console.log(notification.data.link)
+          this.setState({ link: notification.data.link })
+
+          //firebase.notifications().removeAllDeliveredNotifications()
+
+        }
+      })
+
+*/
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+      // Get the action triggered by the notification being opened
+
+
+      const action = notificationOpen.action;
+      // Get information about the notification that was opened
+      const notification: Notification = notificationOpen.notification;
+      console.log("notifopen")
+      if (notification.data.link) {
         console.log(notification.data.link)
-        this.setState({link:notification.data.link})
-      firebase.notifications().removeAllDeliveredNotifications()
-      
-    }
-})
-
-
-
-this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
-    // Get the action triggered by the notification being opened
-   
-    
-    const action = notificationOpen.action;
-    // Get information about the notification that was opened
-    const notification: Notification = notificationOpen.notification;
-    console.log("notifopen")
-    if(notification.data.link){
-        console.log(notification.data.link)
-        this.setState({link: notification.data.link})
-    }
-});
+        this.setState({ link: notification.data.link })
+      }
+    });
 
     const channel = new firebase.notifications.Android.Channel(
       'channelId',
@@ -93,9 +110,9 @@ this.notificationOpenedListener = firebase.notifications().onNotificationOpened(
       if (Platform.OS === 'android') {
 
         const localNotification = new firebase.notifications.Notification({
-            sound: 'default',
-            show_in_foreground: true,
-          })
+          sound: 'default',
+          show_in_foreground: true,
+        })
           .setNotificationId(notification.notificationId)
           .setTitle(notification.title)
           .setSubtitle(notification.subtitle)
@@ -108,7 +125,7 @@ this.notificationOpenedListener = firebase.notifications().onNotificationOpened(
         firebase.notifications()
           .displayNotification(localNotification)
           .catch(err => console.error(err));
-          
+
 
       } else if (Platform.OS === 'ios') {
 
@@ -119,37 +136,36 @@ this.notificationOpenedListener = firebase.notifications().onNotificationOpened(
           .setBody(notification.body)
           .setData(notification.data)
           .ios.setBadge(notification.ios.badge);
-            
+
         firebase.notifications()
           .displayNotification(localNotification)
           .catch(err => console.error(err));
 
       }
-      
-    });
-    
-    
 
-    
+    });
+
+
+
+
   }
 
   componentWillUnmount() {
     // this is where you unsubscribe
     this.unsubscribeFromNotificationListener();
     this.notificationOpenedListener();
-    
+   
+
   }
-  
-  render()  {
-      
-      
-      return <Navigator screenProps={{webViewLink:this.state.link}}/>;
-      
-      
-    
-    
-  
+
+  render() {
+
+
+    return <Navigator screenProps={{ webViewLink: this.state.link }} />;
+
+
+
+
+
+  }
 }
-}
- 
-  
